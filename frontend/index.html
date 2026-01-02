@@ -1,50 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Simple Weather App</title>
-  <style>
-    body { font-family: Arial; margin: 20px; }
-    .card { padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; }
-  </style>
+  <title>EKS Fullstack App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Weather App</h1>
-  <div id="status">Checking backend...</div>
-  <div id="weather"></div>
+  <h1>EKS Fullstack App</h1>
+  <button onclick="callApi()">Call Backend</button>
+  <pre id="output"></pre>
 
-  <script>
-    async function checkHealth() {
-      try {
-        const res = await fetch('/api/health');
-        const data = await res.json();
-        document.getElementById('status').innerText = "Backend: " + data.status;
-      } catch {
-        document.getElementById('status').innerText = "Backend not reachable";
-      }
-    }
-
-    async function loadWeather() {
-      try {
-        const res = await fetch('/api/weather');
-        const data = await res.json();
-        const container = document.getElementById('weather');
-        container.innerHTML = "";
-        data.forEach(w => {
-          container.innerHTML += `
-            <div class="card">
-              <strong>${w.city}</strong><br>
-              Temp: ${w.temperature}°C<br>
-              Desc: ${w.description}
-            </div>
-          `;
-        });
-      } catch {
-        document.getElementById('weather').innerText = "Failed to load weather";
-      }
-    }
-
-    checkHealth();
-    loadWeather();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

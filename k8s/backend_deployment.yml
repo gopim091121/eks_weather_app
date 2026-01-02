@@ -1,44 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: weather-backend
-  namespace: simple-weather
+  name: backend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: weather-backend
+      app: backend
   template:
     metadata:
       labels:
-        app: weather-backend
+        app: backend
     spec:
       containers:
-        - name: backend
-          image: 338121/back:v1
-          ports:
-            - containerPort: 3000
-          env:
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: rds-secret
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: rds-secret
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: rds-secret
-                  key: DB_PASSWORD
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: rds-secret
-                  key: DB_NAME
+      - name: backend
+        image: <ECR_BACKEND_URL>
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: db-secret
           resources:
             requests:
               cpu: "100m"
@@ -46,15 +29,3 @@ spec:
             limits:
               cpu: "250m"
               memory: "256Mi"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: weather-backend-service
-  namespace: simple-weather
-spec:
-  selector:
-    app: weather-backend
-  ports:
-    - port: 3000
-      targetPort: 3000
