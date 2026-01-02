@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: country-app-ingress
-  namespace: country-app
+  name: weather-ingress
+  namespace: simple-weather
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -17,6 +17,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: country-frontend
+                name: weather-frontend-service
                 port:
                   number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: weather-backend-service
+                port:
+                  number: 3000

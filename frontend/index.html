@@ -1,66 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Weather App</title>
+  <title>Simple Weather App</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-    h1 { color: #333; }
-    .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-    .status { margin-bottom: 10px; }
-    input, button { padding: 8px; margin: 5px 0; }
-    .result { margin-top: 15px; padding: 10px; border-radius: 4px; background: #eef; }
+    body { font-family: Arial; margin: 20px; }
+    .card { padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Weather App</h1>
-    <div id="status" class="status">Checking backend health...</div>
-
-    <label for="city">City:</label>
-    <input type="text" id="city" value="London" />
-    <button onclick="fetchWeather()">Get Weather</button>
-
-    <div id="result" class="result"></div>
-  </div>
+  <h1>Weather App</h1>
+  <div id="status">Checking backend...</div>
+  <div id="weather"></div>
 
   <script>
     async function checkHealth() {
       try {
         const res = await fetch('/api/health');
-        if (!res.ok) throw new Error('Backend not healthy');
         const data = await res.json();
-        document.getElementById('status').textContent =
-          'Backend status: ' + data.status;
-      } catch (err) {
-        document.getElementById('status').textContent =
-          'Backend health check failed: ' + err.message;
+        document.getElementById('status').innerText = "Backend: " + data.status;
+      } catch {
+        document.getElementById('status').innerText = "Backend not reachable";
       }
     }
 
-    async function fetchWeather() {
-      const city = document.getElementById('city').value || 'London';
-      const resultDiv = document.getElementById('result');
-      resultDiv.textContent = 'Loading...';
-
+    async function loadWeather() {
       try {
-        const res = await fetch('/api/weather?city=' + encodeURIComponent(city));
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          throw new Error(errData.error || 'Request failed');
-        }
+        const res = await fetch('/api/weather');
         const data = await res.json();
-        resultDiv.innerHTML = `
-          <strong>${data.city}</strong><br/>
-          Temperature: ${data.temperature} °C<br/>
-          Description: ${data.description}
-        `;
-      } catch (err) {
-        resultDiv.textContent = 'Error: ' + err.message;
+        const container = document.getElementById('weather');
+        container.innerHTML = "";
+        data.forEach(w => {
+          container.innerHTML += `
+            <div class="card">
+              <strong>${w.city}</strong><br>
+              Temp: ${w.temperature}°C<br>
+              Desc: ${w.description}
+            </div>
+          `;
+        });
+      } catch {
+        document.getElementById('weather').innerText = "Failed to load weather";
       }
     }
 
     checkHealth();
+    loadWeather();
   </script>
 </body>
 </html>

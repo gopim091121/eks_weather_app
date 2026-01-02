@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: country-frontend
-  namespace: country-app
+  name: weather-frontend
+  namespace: simple-weather
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: country-frontend
+      app: weather-frontend
   template:
     metadata:
       labels:
-        app: country-frontend
+        app: weather-frontend
     spec:
       containers:
         - name: frontend
-          image: 338121/frontend_app:v1
-          imagePullPolicy: IfNotPresent
+          image: <YOUR_DOCKERHUB>/simple-weather-frontend:v1
           ports:
             - containerPort: 80
           resources:
@@ -26,3 +25,17 @@ spec:
             limits:
               cpu: "250m"
               memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-frontend-service
+  namespace: simple-weather
+spec:
+  selector:
+    app: weather-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+
+
