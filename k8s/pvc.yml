@@ -6,7 +6,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: backend-logs-sc
   resources:
     requests:
       storage: 5Gi
