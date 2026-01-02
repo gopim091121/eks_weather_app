@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Weather & Time App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🌍 Country Weather & Time</h1>
+</header>
+
+<section class="container">
+
+    <div class="card">
+        <h2>Enter Country</h2>
+        <input type="text" id="countryInput" placeholder="e.g., India, UK, Japan">
+        <button onclick="fetchCountryData()">Search</button>
+        <button onclick="saveData()">Save</button>
+    </div>
+
+    <div class="card">
+        <h2>⏱ Local Time</h2>
+        <p id="time">Enter a country to load time</p>
+    </div>
+
+    <div class="card">
+        <h2>🌤 Weather</h2>
+        <p id="weather">Enter a country to load weather</p>
+    </div>
+
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>

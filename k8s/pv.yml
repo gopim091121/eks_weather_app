@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: backend-logs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: backend-logs-sc
+  awsElasticBlockStore:
+    volumeID: <YOUR_EBS_VOLUME_ID>
+    fsType: ext4

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: country-frontend
+  namespace: country-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: country-frontend
+  template:
+    metadata:
+      labels:
+        app: country-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: 338121/weather_frontend:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: country-frontend
+  namespace: country-app
+spec:
+  selector:
+    app: country-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: ClusterIP

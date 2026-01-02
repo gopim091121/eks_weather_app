@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: country-backend
+  namespace: country-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: country-backend
+  template:
+    metadata:
+      labels:
+        app: country-backend
+    spec:
+      containers:
+        - name: backend
+          image: 338121/weather_backend:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD
+            - name: PORT
+              value: "5000"
+          volumeMounts:
+            - name: logs
+              mountPath: /app/logs
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: backend-logs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: country-backend
+  namespace: country-app
+spec:
+  selector:
+    app: country-backend
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
