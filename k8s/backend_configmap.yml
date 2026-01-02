@@ -4,5 +4,5 @@ metadata:
   name: backend-config
   namespace: country-app
 data:
-  DB_HOST: your-rds-endpoint.amazonaws.com
+  DB_HOST: database-1.ce7megyw4sr1.us-east-1.rds.amazonaws.com
   DB_NAME: countrydb
