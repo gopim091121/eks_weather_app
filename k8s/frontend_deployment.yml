@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: <ECR_FRONTEND_URL>
+        image: 338121/chatfront:v1
         ports:
         - containerPort: 3000
         resources:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: <ECR_BACKEND_URL>
+        image: 338121/chatback:v1
         ports:
         - containerPort: 3000
         envFrom:
