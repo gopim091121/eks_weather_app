@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>EKS Fullstack App</title>
+  <title>Real-Time EKS App</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>EKS Fullstack App</h1>
-  <button onclick="sendMessage()">Send Message</button>
-  <div id="output" style="margin-top:20px"></div>
+  <h1>Real-Time Messages</h1>
+
+  <div>
+    <input type="text" id="messageInput" placeholder="Type a message" style="width:70%; padding:5px;">
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <div id="output" style="margin-top:20px; max-height:400px; overflow:auto;"></div>
+
   <script src="script.js"></script>
 </body>
 </html>

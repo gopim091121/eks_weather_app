@@ -1,34 +1,44 @@
-// Display messages in a table
-function callApi() {
+const output = document.getElementById("output");
+const input = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+
+// Fetch and render messages
+function fetchMessages() {
   fetch("/api/messages")
     .then(res => res.json())
     .then(data => {
-      const output = document.getElementById("output");
       if (!data || data.length === 0) {
         output.innerHTML = "<p>No messages found</p>";
         return;
       }
 
-      let html = "<table border='1' cellpadding='5'><tr><th>ID</th><th>Text</th><th>Created At</th></tr>";
-      data.forEach(msg => {
-        html += `<tr>
+      let html = "<table border='1' cellpadding='5' style='width:100%;'>";
+      html += "<tr><th>ID</th><th>Text</th><th>Created At</th></tr>";
+
+      data.forEach((msg, index) => {
+        const formattedTime = new Date(msg.created_at).toLocaleString();
+        const highlight = index === 0 ? "style='background:#d4f1ff'" : "";
+        html += `<tr ${highlight}>
                   <td>${msg.id}</td>
                   <td>${msg.text}</td>
-                  <td>${new Date(msg.created_at).toLocaleString()}</td>
+                  <td>${formattedTime}</td>
                 </tr>`;
       });
-      html += "</table>";
+
       output.innerHTML = html;
+
+      // Scroll to top to see newest message
+      output.scrollIntoView({ behavior: "smooth" });
     })
     .catch(err => {
       console.error(err);
-      document.getElementById("output").innerHTML = "<p>Error fetching messages</p>";
+      output.innerHTML = "<p>Error fetching messages</p>";
     });
 }
 
-// Prompt user to send a new message
+// Send new message
 function sendMessage() {
-  const text = prompt("Enter your message:");
+  const text = input.value.trim();
   if (!text) return;
 
   fetch("/api/messages", {
@@ -36,13 +46,22 @@ function sendMessage() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text })
   })
-  .then(res => res.json())
-  .then(() => callApi())
-  .catch(err => {
-    console.error(err);
-    alert("Failed to send message");
-  });
+    .then(res => res.json())
+    .then(() => {
+      input.value = "";
+      fetchMessages();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Failed to send message");
+    });
 }
 
+// Auto-refresh every 3 seconds
+setInterval(fetchMessages, 3000);
+
+// Bind send button
+sendBtn.addEventListener("click", sendMessage);
+
 // Initial load
-window.onload = callApi;
+window.onload = fetchMessages;
