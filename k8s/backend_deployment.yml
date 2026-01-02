@@ -42,6 +42,13 @@ spec:
                   key: DB_PASSWORD
             - name: PORT
               value: "5000"
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
           volumeMounts:
             - name: logs
               mountPath: /app/logs
@@ -49,4 +56,3 @@ spec:
         - name: logs
           persistentVolumeClaim:
             claimName: backend-logs-pvc
-
