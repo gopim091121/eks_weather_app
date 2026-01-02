@@ -1,38 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Weather & Time App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Weather App</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    h1 { color: #333; }
+    .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+    .status { margin-bottom: 10px; }
+    input, button { padding: 8px; margin: 5px 0; }
+    .result { margin-top: 15px; padding: 10px; border-radius: 4px; background: #eef; }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Weather App</h1>
+    <div id="status" class="status">Checking backend health...</div>
 
-<header>
-    <h1>🌍 Country Weather & Time</h1>
-</header>
+    <label for="city">City:</label>
+    <input type="text" id="city" value="London" />
+    <button onclick="fetchWeather()">Get Weather</button>
 
-<section class="container">
+    <div id="result" class="result"></div>
+  </div>
 
-    <div class="card">
-        <h2>Enter Country</h2>
-        <input type="text" id="countryInput" placeholder="e.g., India, UK, Japan">
-        <button onclick="fetchCountryData()">Search</button>
-        <button onclick="saveData()">Save</button>
-    </div>
+  <script>
+    async function checkHealth() {
+      try {
+        const res = await fetch('/api/health');
+        if (!res.ok) throw new Error('Backend not healthy');
+        const data = await res.json();
+        document.getElementById('status').textContent =
+          'Backend status: ' + data.status;
+      } catch (err) {
+        document.getElementById('status').textContent =
+          'Backend health check failed: ' + err.message;
+      }
+    }
 
-    <div class="card">
-        <h2>⏱ Local Time</h2>
-        <p id="time">Enter a country to load time</p>
-    </div>
+    async function fetchWeather() {
+      const city = document.getElementById('city').value || 'London';
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = 'Loading...';
 
-    <div class="card">
-        <h2>🌤 Weather</h2>
-        <p id="weather">Enter a country to load weather</p>
-    </div>
+      try {
+        const res = await fetch('/api/weather?city=' + encodeURIComponent(city));
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || 'Request failed');
+        }
+        const data = await res.json();
+        resultDiv.innerHTML = `
+          <strong>${data.city}</strong><br/>
+          Temperature: ${data.temperature} °C<br/>
+          Description: ${data.description}
+        `;
+      } catch (err) {
+        resultDiv.textContent = 'Error: ' + err.message;
+      }
+    }
 
-</section>
-
-<script src="app.js"></script>
+    checkHealth();
+  </script>
 </body>
 </html>
