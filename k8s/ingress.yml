@@ -4,19 +4,20 @@ metadata:
   name: country-app-ingress
   namespace: country-app
   annotations:
-    kubernetes.io/ingress.className: alb
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 spec:
+  ingressClassName: alb
   rules:
-    - host: www.codenimbustech.com   # change to your domain or omit for wildcard
+    - host: www.codenimbustech.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: country-frontend
+                name: country-frontend-service
                 port:
                   number: 80
           - path: /api
