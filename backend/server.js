@@ -7,12 +7,15 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
+// CORS to allow frontend connections
 app.use(cors());
 app.use(express.json());
 
+// Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "*", // allow all origins for testing
+    methods: ["GET", "POST"],
   },
 });
 
@@ -26,7 +29,7 @@ const db = mysql.createPool({
   connectionLimit: 10,
 });
 
-// WebSocket connection
+// Socket.IO connection handler
 io.on("connection", (socket) => {
   console.log("Frontend connected via WebSocket");
 
@@ -36,6 +39,13 @@ io.on("connection", (socket) => {
 });
 
 // REST endpoints
+
+// Health check
+app.get("/api/health", (req, res) => {
+  res.json({ status: "Backend is running" });
+});
+
+// Get all messages
 app.get("/api/messages", (req, res) => {
   db.query("SELECT * FROM messages ORDER BY created_at DESC", (err, rows) => {
     if (err) return res.status(500).json({ error: "DB error" });
@@ -43,6 +53,7 @@ app.get("/api/messages", (req, res) => {
   });
 });
 
+// Add new message
 app.post("/api/messages", (req, res) => {
   const { text, user } = req.body;
   if (!text || text.trim() === "") return res.status(400).json({ error: "Text required" });
@@ -50,7 +61,11 @@ app.post("/api/messages", (req, res) => {
   db.query("INSERT INTO messages (text) VALUES (?)", [text], (err, result) => {
     if (err) return res.status(500).json({ error: "DB insert failed" });
 
-    const newMessage = { id: result.insertId, text, created_at: new Date() };
+    const newMessage = {
+      id: result.insertId,
+      text,
+      created_at: new Date(),
+    };
 
     // Emit new message to all connected clients
     io.emit("new_message", newMessage);
@@ -59,9 +74,13 @@ app.post("/api/messages", (req, res) => {
   });
 });
 
-// Optional: Emit system messages every 30 seconds
+// Optional: system messages every 30s
 setInterval(() => {
-  const sysMsg = { id: 0, text: "System update: " + new Date().toLocaleTimeString(), created_at: new Date() };
+  const sysMsg = {
+    id: 0,
+    text: "System update: " + new Date().toLocaleTimeString(),
+    created_at: new Date(),
+  };
   io.emit("new_message", sysMsg);
 }, 30000);
 
