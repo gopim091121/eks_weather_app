@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 338121/chatback:v1
+        image: 338121/chatback:v2
         ports:
         - containerPort: 3000
         envFrom:
