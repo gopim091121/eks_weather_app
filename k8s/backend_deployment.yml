@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 338121/chatback:v6
+        image: 338121/chatback:v4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
