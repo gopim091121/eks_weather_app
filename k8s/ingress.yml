@@ -17,13 +17,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: country-frontend-service
+                name: country-frontend
                 port:
                   number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: country-backend
-                port:
-                  number: 5000
