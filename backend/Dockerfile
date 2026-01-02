@@ -1,12 +1,13 @@
-FROM node:22-alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install --only=production
+COPY package.json package-lock.json* ./
+RUN npm install --production || npm install --production --legacy-peer-deps
 
-COPY server.js ./
+COPY . .
 
-EXPOSE 5000
+ENV PORT=3000
+EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
