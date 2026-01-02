@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 338121/data:v1
+        image: 338121/data:v2 
         ports:
         - containerPort: 3000
         resources:
