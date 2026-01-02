@@ -49,17 +49,4 @@ spec:
         - name: logs
           persistentVolumeClaim:
             claimName: backend-logs-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: country-backend
-  namespace: country-app
-spec:
-  selector:
-    app: country-backend
-  ports:
-    - name: http
-      port: 5000
-      targetPort: 5000
-  type: ClusterIP
+

@@ -19,17 +19,3 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: country-frontend
-  namespace: country-app
-spec:
-  selector:
-    app: country-frontend
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-  type: ClusterIP
