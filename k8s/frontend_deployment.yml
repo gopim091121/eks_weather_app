@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 338121/chatfront:v1
+        image: 338121/chatfront:v4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
