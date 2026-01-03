@@ -1,0 +1,47 @@
+region            = "us-east-1"
+name              = "dev"
+
+# node_instance_type = "t3.medium"
+# node_min_size      = 1
+# node_max_size      = 3
+# node_desired_size  = 2
+secret_name        = "eks_rds_secret"
+db_instance_class    = "db.t3.micro"
+db_allocated_storage = 20
+db_username          = "appuser"
+
+node_groups = {
+  frontend = {
+    instance_type = "t3.large"
+    min_size      = 1
+    max_size      = 3
+    desired_size  = 2
+    capacity_type = "SPOT"
+    labels = {
+      role = "frontend"
+    }
+    taints = []
+  }
+}
+addons = [
+  {
+    name       = "aws-load-balancer-controller"
+    namespace  = "kube-system"
+    repository = "https://aws.github.io/eks-charts"
+    chart      = "aws-load-balancer-controller"
+    version    = "1.7.2"
+    values = {
+      clusterName = "prod-eks"
+      "serviceAccount.create" = true
+      "serviceAccount.name"   = "aws-load-balancer-controller"
+    }
+  },
+  {
+    name       = "metrics-server"
+    namespace  = "kube-system"
+    repository = "https://kubernetes-sigs.github.io/metrics-server/"
+    chart      = "metrics-server"
+    version    = "3.12.1"
+    values     = {}
+  }
+] 
