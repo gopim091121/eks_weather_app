@@ -11,7 +11,7 @@ CREATE TABLE country_data (
     time VARCHAR(50),
     saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+CREATE DATABASE appdb;
 USE appdb;
 
 CREATE TABLE messages (
