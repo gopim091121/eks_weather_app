@@ -12,11 +12,11 @@ db_username          = "appuser"
 
 node_groups = {
   frontend = {
-    instance_types = ["t3.large", "t3a.large", "m5.large"]
+    instance_types = ["t3.micro", "t3.small", "c7i-flex.large", "m7i-flex.large"]
     min_size      = 1
     max_size      = 3
     desired_size  = 2
-    capacity_type = "SPOT"
+    capacity_type = "ON_DEMAND"
     labels = {
       role = "frontend"
     }
