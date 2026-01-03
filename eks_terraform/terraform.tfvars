@@ -12,7 +12,7 @@ db_username          = "appuser"
 
 node_groups = {
   frontend = {
-    instance_type = "t3.large"
+    instance_types = ["t3.large", "t3a.large", "m5.large"]
     min_size      = 1
     max_size      = 3
     desired_size  = 2

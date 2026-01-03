@@ -5,23 +5,44 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: rabbitmq }
+    matchLabels:
+      app: rabbitmq
   template:
-    metadata: { labels: { app: rabbitmq } }
+    metadata:
+      labels:
+        app: rabbitmq
     spec:
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "rabbitmq"
+        effect: "NoSchedule"
       containers:
       - name: rabbitmq
         image: rabbitmq:3-management
         ports:
         - containerPort: 5672
         - containerPort: 15672
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: rabbitmq
 spec:
-  selector: { app: rabbitmq }
+  selector:
+    app: rabbitmq
   ports:
-  - port: 5672
-  - port: 15672
+  - name: amqp
+    port: 5672
+    targetPort: 5672
+  - name: management
+    port: 15672
+    targetPort: 15672
+  type: ClusterIP

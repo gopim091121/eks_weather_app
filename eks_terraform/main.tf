@@ -35,21 +35,6 @@ module "vpc" {
 
 # ---------------- EKS ----------------
 
-# module "eks" {
-#   source = "./modules/eks"
-
-#   name               = var.name
-#   eks_version        = var.eks_version
-#   node_instance_type = var.node_instance_type
-
-#   vpc_id             = module.vpc.vpc_id
-#   private_subnet_ids = module.vpc.private_subnet_ids
-#   public_subnet_ids  = module.vpc.public_subnet_ids
-
-#   node_min_size     = var.node_min_size
-#   node_max_size     = var.node_max_size
-#   node_desired_size = var.node_desired_size
-# }
 module "eks" {
   source = "./modules/eks"
 
@@ -104,22 +89,6 @@ module "rds" {
 }
 
 # ---------------- Addons (ALB + metrics-server) ----------------
-
-# module "addons" {
-#   source = "./modules/addons"
-
-#   name                   = var.name
-#   cluster_name           = module.eks.cluster_name
-#   cluster_endpoint       = module.eks.cluster_endpoint
-#   cluster_ca_certificate = module.eks.cluster_ca_certificate
-#   oidc_provider_arn      = module.eks.oidc_provider_arn
-#   oidc_provider_url      = module.eks.oidc_provider_url
-
-#   vpc_id = module.vpc.vpc_id
-#       depends_on = [
-#     module.eks
-#   ]
-# }
 module "addons" {
   source = "./modules/addons"
 

@@ -38,7 +38,7 @@ variable "public_subnet_ids" {
 
 variable "node_groups" {
   type = map(object({
-    instance_type = string
+    instance_types = list(string)
     min_size      = number
     max_size      = number
     desired_size  = number

@@ -143,7 +143,7 @@ resource "aws_eks_node_group" "this" {
     min_size     = each.value.min_size
   }
 
-  instance_types = [each.value.instance_type]
+  instance_types = each.value.instance_types
 
   labels = each.value.labels
 

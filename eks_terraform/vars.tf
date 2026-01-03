@@ -52,7 +52,7 @@ variable "eks_version" {
 variable "node_groups" {
   description = "List of EKS managed node groups"
   type = map(object({
-    instance_type  = string
+    instance_types  = list(string)
     min_size       = number
     max_size       = number
     desired_size   = number
@@ -61,29 +61,6 @@ variable "node_groups" {
   }))
 }
 
-# variable "node_instance_type" {
-#   description = "Instance type for EKS worker nodes"
-#   type        = string
-#   default     = "t3.large"
-# }
-
-# variable "node_min_size" {
-#   description = "Minimum number of nodes in the node group"
-#   type        = number
-#   default     = 2
-# }
-
-# variable "node_max_size" {
-#   description = "Maximum number of nodes in the node group"
-#   type        = number
-#   default     = 6
-# }
-
-# variable "node_desired_size" {
-#   description = "Desired number of nodes in the node group"
-#   type        = number
-#   default     = 3
-# }
 variable "secret_name" {
   description = "Base name for Secrets Manager secrets"
   type        = string

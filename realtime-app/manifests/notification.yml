@@ -1,21 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: { name: notification-service }
+metadata:
+  name: notification-service
 spec:
   replicas: 1
-  selector: { matchLabels: { app: notification-service } }
+  selector:
+    matchLabels:
+      app: notification-service
   template:
-    metadata: { labels: { app: notification-service } }
+    metadata:
+      labels:
+        app: notification-service
     spec:
       containers:
       - name: notification-service
         image: <your-registry>/notification:v1
-        envFrom: [{ secretRef: { name: app-secret } }]
+        envFrom:
+        - secretRef:
+            name: app-secret
+        ports:
+        - containerPort: 3002
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
 ---
 apiVersion: v1
 kind: Service
-metadata: { name: notification-service }
+metadata:
+  name: notification-service
 spec:
-  selector: { app: notification-service }
-  ports: [{ port:3002, targetPort:3002 }]
+  selector:
+    app: notification-service
+  ports:
+  - port: 3002
+    targetPort: 3002
   type: ClusterIP
