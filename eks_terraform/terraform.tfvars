@@ -5,13 +5,14 @@ secret_name        = "eks_rds_secret"
 db_instance_class    = "db.t3.micro"
 db_allocated_storage = 20
 db_username          = "appuser"
+rds_backup_retention_period = 1
 
 node_groups = {
   frontend = {
     instance_types = ["t3.micro", "t3.small", "c7i-flex.large", "m7i-flex.large"]
     min_size      = 1
-    max_size      = 3
-    desired_size  = 2
+    max_size      = 5
+    desired_size  = 3
     capacity_type = "ON_DEMAND"
     labels = {
       role = "frontend"

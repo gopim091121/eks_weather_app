@@ -26,6 +26,11 @@ variable "password" {
   type      = string
   sensitive = true
 }
+variable "rds_backup_retention_period" {
+  description = "Number of days to retain backups for RDS"
+  type        = number
+  default     = 1
+}
 
 variable "private_subnet_ids" {
   type = list(string)

@@ -19,7 +19,7 @@ output "rds_port" {
 }
 
 output "db_secret_arn" {
-  value = aws_secretsmanager_secret.db.arn
+  value = aws_secretsmanager_secret.rds.arn
 }
 output "node_group_names" {
   value = module.eks.node_group_names

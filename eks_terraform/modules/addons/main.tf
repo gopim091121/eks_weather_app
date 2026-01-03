@@ -178,64 +178,6 @@ resource "aws_iam_role_policy_attachment" "alb_controller_attach" {
   policy_arn = aws_iam_policy.alb_controller.arn
 }
 
-# AWS Load Balancer Controller via Helm
-
-# resource "helm_release" "aws_load_balancer_controller" {
-#   name       = "aws-load-balancer-controller"
-#   repository = "https://aws.github.io/eks-charts"
-#   chart      = "aws-load-balancer-controller"
-#   version    = "1.7.2"
-
-#   namespace        = local.alb_sa_namespace
-#   create_namespace = false
-
-#   set {
-#     name  = "clusterName"
-#     value = var.cluster_name
-#   }
-
-#   set {
-#     name  = "serviceAccount.create"
-#     value = "true"
-#   }
-
-#   set {
-#     name  = "serviceAccount.name"
-#     value = local.alb_sa_name
-#   }
-
-#   set {
-#     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-#     value = aws_iam_role.alb_controller.arn
-#   }
-
-#   depends_on = [aws_iam_role_policy_attachment.alb_controller_attach]
-# }
-
-# # metrics-server via Helm
-
-# resource "helm_release" "metrics_server" {
-#   name       = "metrics-server"
-#   repository = "https://kubernetes-sigs.github.io/metrics-server/"
-#   chart      = "metrics-server"
-#   version    = "3.12.1"
-
-#   namespace = "kube-system"
-
-# }
-provider "helm" {
-  kubernetes {
-    host                   = var.cluster_endpoint
-    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
-
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
-    }
-  }
-}
-
 resource "helm_release" "addons" {
   for_each = { for addon in var.addons : addon.name => addon }
 

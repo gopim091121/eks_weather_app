@@ -42,7 +42,7 @@ resource "aws_db_instance" "this" {
   multi_az                = false
   storage_encrypted       = false
   publicly_accessible     = false
-  backup_retention_period = 7
+  backup_retention_period = var.rds_backup_retention_period
   skip_final_snapshot     = true
 
   tags = {

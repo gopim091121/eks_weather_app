@@ -77,7 +77,11 @@ variable "db_allocated_storage" {
   type        = number
   default     = 20
 }
-
+variable "rds_backup_retention_period" {
+  description = "Number of days to retain backups for RDS"
+  type        = number
+  default     = 1
+}
 variable "db_username" {
   description = "Database master username"
   type        = string

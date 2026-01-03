@@ -25,25 +25,6 @@ module "eks" {
 }
 
 # ---------------- Secrets Manager for DB password ----------------
-
-# resource "random_password" "db" {
-#   length           = 20
-#   special          = true
-#   override_special = "!@#$%^&*()-_=+[]{}<>:?"
-# }
-
-# resource "aws_secretsmanager_secret" "db" {
-#   name = "${var.secret_name}/db/password"
-# }
-
-# resource "aws_secretsmanager_secret_version" "db" {
-#   secret_id     = aws_secretsmanager_secret.db.id
-#   secret_string = random_password.db.result
-# }
-
-# data "aws_secretsmanager_secret_version" "db" {
-#   secret_id = aws_secretsmanager_secret.db.id
-# }
 resource "random_password" "rds" {
   length           = 12
   special          = true
@@ -74,9 +55,10 @@ module "rds" {
 
   name              = "${var.name}-db"
   engine            = "mysql"
-  engine_version    = "8.0.35"
+  engine_version    = "8.0.43"
   instance_class    = var.db_instance_class
   allocated_storage = var.db_allocated_storage
+  rds_backup_retention_period =  var.rds_backup_retention_period
 
   username = var.db_username
   # password = data.aws_secretsmanager_secret_version.db.secret_string
@@ -98,7 +80,10 @@ module "addons" {
   cluster_ca_certificate = module.eks.cluster_ca_certificate
   oidc_provider_arn      = module.eks.oidc_provider_arn
   oidc_provider_url      = module.eks.oidc_provider_url
+  addons                 = var.addons
+  vpc_id                 = module.vpc.vpc_id
 
-  addons = var.addons
-    vpc_id = module.vpc.vpc_id
+  depends_on = [
+    module.eks
+  ]
 }
