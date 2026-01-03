@@ -21,18 +21,18 @@ node_groups = {
   }
 }
 addons = [
-  {
-    name       = "aws-load-balancer-controller"
-    namespace  = "kube-system"
-    repository = "https://aws.github.io/eks-charts"
-    chart      = "aws-load-balancer-controller"
-    version    = "1.7.2"
-    values = {
-      clusterName = "prod-eks"
-      "serviceAccount.create" = true
-      "serviceAccount.name"   = "aws-load-balancer-controller"
-    }
-  },
+  # {
+  #   name       = "aws-load-balancer-controller"
+  #   namespace  = "kube-system"
+  #   repository = "https://aws.github.io/eks-charts"
+  #   chart      = "aws-load-balancer-controller"
+  #   version    = "1.7.2"
+  #   values = {
+  #      clusterName = "dev"
+  #     # "serviceAccount.create" = true
+  #     # "serviceAccount.name"   = "aws-load-balancer-controller"
+  #   }
+  # },
   {
     name       = "metrics-server"
     namespace  = "kube-system"
