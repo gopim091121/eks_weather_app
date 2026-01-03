@@ -19,16 +19,16 @@ data "aws_iam_policy_document" "alb_controller_assume_role" {
   }
 }
 
-resource "aws_iam_role" "alb_controller" {
-  name               = "${var.name}-alb-controller-role"
-  assume_role_policy = data.aws_iam_policy_document.alb_controller_assume_role.json
-}
+# resource "aws_iam_role" "alb_controller" {
+#   name               = "${var.name}-alb-controller-role"
+#   assume_role_policy = data.aws_iam_policy_document.alb_controller_assume_role.json
+# }
 
-# Attach AWS-managed policy for ALB Controller
-resource "aws_iam_role_policy_attachment" "alb_controller_attach" {
-  role       = aws_iam_role.alb_controller.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSLoadBalancerControllerIAMPolicy"
-}
+# # Attach AWS-managed policy for ALB Controller
+# resource "aws_iam_role_policy_attachment" "alb_controller_attach" {
+#   role       = aws_iam_role.alb_controller.name
+#   policy_arn = "arn:aws:iam::aws:policy/AWSLoadBalancerControllerIAMPolicy"
+# }
 
 ###############################################
 # KUBERNETES SERVICE ACCOUNT WITH IRSA

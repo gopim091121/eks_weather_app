@@ -103,7 +103,10 @@ resource "aws_iam_policy" "alb_controller" {
         "ec2:DescribeVpcs",
         "ec2:DescribeAvailabilityZones",
         "ec2:DescribeAccountAttributes",
-        "ec2:DescribeInternetGateways"
+        "ec2:DescribeInternetGateways",
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags"
       ],
       "Resource": "*"
     },
@@ -141,7 +144,11 @@ resource "aws_iam_policy" "alb_controller" {
         "waf-regional:DisassociateWebACL",
         "wafv2:GetWebACL",
         "wafv2:AssociateWebACL",
-        "wafv2:DisassociateWebACL"
+        "wafv2:DisassociateWebACL",
+        "wafv2:GetWebACLForResource",
+        "waf-regional:GetWebACLForResource",
+        "waf-regional:AssociateWebACL",
+        "waf-regional:DisassociateWebACL"
       ],
       "Resource": "*"
     },

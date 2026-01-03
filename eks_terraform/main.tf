@@ -28,7 +28,7 @@ module "eks" {
 resource "random_password" "rds" {
   length           = 12
   special          = true
-  override_special = "_%@"
+  override_special = "_@"
 }
 
 resource "random_string" "secret_suffix" {
@@ -75,6 +75,7 @@ module "addons" {
   source = "./modules/addons"
 
   name                   = var.name
+  region                 = var.region
   cluster_name           = module.eks.cluster_name
   cluster_endpoint       = module.eks.cluster_endpoint
   cluster_ca_certificate = module.eks.cluster_ca_certificate
