@@ -26,25 +26,47 @@ module "eks" {
 
 # ---------------- Secrets Manager for DB password ----------------
 
-resource "random_password" "db" {
-  length           = 20
+# resource "random_password" "db" {
+#   length           = 20
+#   special          = true
+#   override_special = "!@#$%^&*()-_=+[]{}<>:?"
+# }
+
+# resource "aws_secretsmanager_secret" "db" {
+#   name = "${var.secret_name}/db/password"
+# }
+
+# resource "aws_secretsmanager_secret_version" "db" {
+#   secret_id     = aws_secretsmanager_secret.db.id
+#   secret_string = random_password.db.result
+# }
+
+# data "aws_secretsmanager_secret_version" "db" {
+#   secret_id = aws_secretsmanager_secret.db.id
+# }
+resource "random_password" "rds" {
+  length           = 12
   special          = true
-  override_special = "!@#$%^&*()-_=+[]{}<>:?"
+  override_special = "_%@"
 }
 
-resource "aws_secretsmanager_secret" "db" {
-  name = "${var.secret_name}/db/password"
+resource "random_string" "secret_suffix" {
+  length  = 6
+  special = false
 }
 
-resource "aws_secretsmanager_secret_version" "db" {
-  secret_id     = aws_secretsmanager_secret.db.id
-  secret_string = random_password.db.result
+resource "aws_secretsmanager_secret" "rds" {
+  name = "myapp-rds-secret-${random_string.secret_suffix.result}"
 }
 
-data "aws_secretsmanager_secret_version" "db" {
-  secret_id = aws_secretsmanager_secret.db.id
-}
+resource "aws_secretsmanager_secret_version" "rds" {
+  secret_id = aws_secretsmanager_secret.rds.id
 
+  secret_string = jsonencode({
+    username = "admin"
+    password = random_password.rds.result
+  })
+}
 # ---------------- RDS ----------------
 
 module "rds" {
@@ -57,7 +79,8 @@ module "rds" {
   allocated_storage = var.db_allocated_storage
 
   username = var.db_username
-  password = data.aws_secretsmanager_secret_version.db.secret_string
+  # password = data.aws_secretsmanager_secret_version.db.secret_string
+  password = random_password.rds.result
 
   private_subnet_ids = module.vpc.private_subnet_ids
   vpc_id             = module.vpc.vpc_id
