@@ -1,10 +1,6 @@
 region            = "us-east-1"
 name              = "dev"
 
-# node_instance_type = "t3.medium"
-# node_min_size      = 1
-# node_max_size      = 3
-# node_desired_size  = 2
 secret_name        = "eks_rds_secret"
 db_instance_class    = "db.t3.micro"
 db_allocated_storage = 20
