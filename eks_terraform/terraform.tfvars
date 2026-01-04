@@ -1,5 +1,5 @@
 region            = "us-east-1"
-name              = "dev"
+name              = "dev-eks"
 
 secret_name        = "eks_rds_secret"
 db_instance_class    = "db.t3.micro"
@@ -11,13 +11,14 @@ node_groups = {
   frontend = {
     instance_types = ["t3.micro", "t3.small", "c7i-flex.large", "m7i-flex.large"]
     min_size      = 1
-    max_size      = 10
-    desired_size  = 10
+    max_size      = 15
+    desired_size  = 14
     capacity_type = "ON_DEMAND"
     labels = {
       role = "frontend"
     }
     taints = []
+    
   }
 }
 addons = [
