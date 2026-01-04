@@ -1,24 +1,16 @@
-CREATE DATABASE countrydb;
-USE countrydb;
-CREATE TABLE country_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    country VARCHAR(100),
-    latitude DECIMAL(10,6),
-    longitude DECIMAL(10,6),
-    timezone VARCHAR(100),
-    temperature DECIMAL(5,2),
-    windspeed DECIMAL(5,2),
-    time VARCHAR(50),
-    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-CREATE DATABASE appdb;
-USE appdb;
-
 CREATE TABLE messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  text VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  text VARCHAR(500) NOT NULL,
+  user VARCHAR(100) NOT NULL DEFAULT 'Anonymous',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  deleted TINYINT(1) DEFAULT 0
 );
 
-INSERT INTO messages (text)
-VALUES ('Hello from RDS MySQL!');
+INSERT INTO messages (text, user) VALUES
+('Hello from RDS MySQL!', 'System'),
+('This is a realtime message', 'Gopi'),
+('Learning Kubernetes with EKS 🚀', 'DevUser'),
+('Socket.IO makes apps realtime', 'Frontend'),
+('This message will be editable', 'Tester'),
+('urgent: check backend logs', 'Admin');
