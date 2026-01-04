@@ -1,5 +1,5 @@
 region            = "us-east-1"
-name              = "dev-eks"
+name              = "dev-eks-cluster"
 
 secret_name        = "eks_rds_secret"
 db_instance_class    = "db.t3.micro"
