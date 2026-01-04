@@ -88,3 +88,19 @@ module "addons" {
     module.eks
   ]
 }
+resource "aws_instance" "example" {
+  ami           = "ami-0ecb62995f68bb549" # Amazon Linux 2 AMI ID for us-east-1
+  instance_type = "t3.micro"
+  vpc_id        = module.vpc.vpc_id
+  subnet_id     = module.vpc.public_subnet_ids[0]
+  key_name      = "gitlab_runner"
+  security_group_ids = [module.eks.node_sg_id]
+  user_data = file("setup_instance.sh")
+
+  tags = {
+    Name = "ExampleInstance"
+  }
+  depends_on = [
+    module.eks
+  ]
+}
