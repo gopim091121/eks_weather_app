@@ -88,6 +88,7 @@ module "addons" {
     module.eks
   ]
 }
+# ---------------- Example EC2 Instance ----------------
 resource "aws_instance" "example" {
   ami           = "ami-0ecb62995f68bb549" # Amazon Linux 2 AMI ID for us-east-1
   instance_type = "t3.micro"
